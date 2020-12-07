@@ -1,0 +1,2 @@
+# Prevent users from browsing the directory
+Options -Indexes

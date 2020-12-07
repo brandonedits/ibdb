@@ -1,0 +1,13 @@
+body {
+    background: #ffffff;
+}
+
+button {
+    cursor: pointer;
+}
+
+.like-dislike,
+.fa-thumbs-up:hover,
+.fa-thumbs-down:hover {
+    color: #0275d8;
+}
