@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2019 at 11:45 PM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Dec 10, 2020 at 09:21 AM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.2.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ibdb`
+-- Database: `book_review`
 --
 
 -- --------------------------------------------------------
@@ -44,7 +43,8 @@ INSERT INTO `author` (`author_id`, `fName`, `lName`) VALUES
 (203, 'Jane', 'Doe'),
 (204, 'Michael', 'Jordan'),
 (205, 'Brandon', 'Hempel'),
-(206, 'Alfred', 'Hitchcock');
+(206, 'Alfred', 'Hitchcock'),
+(209, 'brandon', 'john');
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE `book` (
   `genre` varchar(255) NOT NULL,
   `synopsis` text NOT NULL,
   `is_published` tinyint(4) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -73,7 +73,9 @@ INSERT INTO `book` (`book_id`, `user_id`, `title`, `isbn`, `genre`, `synopsis`, 
 (378, 1, 'Test multiple authors', 53647456, 'Adventure', 'Testing multiple authors.', 1, '2019-12-08 17:15:00'),
 (379, 1, 'Comedy Book', 453657, 'Comedy', 'This is a comedy.', 1, '2019-12-09 15:07:16'),
 (380, 1, 'Horror Story', 4677745, 'Horror', 'This is a horror story.', 1, '2019-12-09 15:07:40'),
-(381, 1, 'Little Johnny', 3537763, 'Mystery', 'This is a mystery about a boy named Johnny.', 1, '2019-12-09 15:08:42');
+(381, 1, 'Little Johnny', 3537763, 'Mystery', 'This is a mystery about a boy named Johnny.', 1, '2019-12-09 15:08:42'),
+(385, 7, 'test editBook', 346457475, 'Adventure', 'Testing the editBook() function.', 1, '2019-12-11 18:47:57'),
+(388, 1, 'Vertical', 54534534, 'Action', 'gergerger', 0, '2020-11-14 23:38:47');
 
 -- --------------------------------------------------------
 
@@ -98,7 +100,11 @@ INSERT INTO `book_author` (`book_id`, `author_id`) VALUES
 (378, 204),
 (379, 205),
 (380, 206),
-(381, 201);
+(381, 201),
+(382, 201),
+(385, 204),
+(385, 205),
+(388, 209);
 
 -- --------------------------------------------------------
 
@@ -118,7 +124,11 @@ CREATE TABLE `book_rating` (
 
 INSERT INTO `book_rating` (`user_id`, `book_id`, `rating`) VALUES
 (1, 374, 5),
-(3, 380, 3);
+(1, 381, 4),
+(1, 385, 1),
+(3, 380, 3),
+(3, 385, 5),
+(7, 385, 4);
 
 -- --------------------------------------------------------
 
@@ -137,13 +147,17 @@ CREATE TABLE `like_dislike` (
 --
 
 INSERT INTO `like_dislike` (`user_id`, `review_id`, `action`) VALUES
-(1, 124, 'like'),
 (1, 126, 'like'),
-(1, 127, 'like'),
-(1, 128, 'like'),
+(1, 128, 'dislike'),
+(1, 132, 'dislike'),
+(1, 134, 'dislike'),
 (3, 128, 'like'),
-(6, 124, 'dislike'),
-(6, 126, 'like');
+(3, 134, 'dislike'),
+(5, 132, 'dislike'),
+(6, 126, 'like'),
+(8, 131, 'dislike'),
+(8, 132, 'like'),
+(8, 134, 'dislike');
 
 -- --------------------------------------------------------
 
@@ -158,7 +172,7 @@ CREATE TABLE `review` (
   `review_title` varchar(255) NOT NULL,
   `comment` text NOT NULL,
   `is_published` tinyint(4) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -166,10 +180,11 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`review_id`, `user_id`, `book_id`, `review_title`, `comment`, `is_published`, `created_at`) VALUES
-(124, 1, 374, 'shit book', 'This book is shit.', 1, '2019-12-08 17:07:36'),
 (126, 1, 374, 'Testing Reviews', 'Decent book.', 1, '2019-12-08 17:56:29'),
-(127, 1, 377, 'fuck', 'fuck this.', 1, '2019-12-08 18:05:51'),
-(128, 1, 380, 'test review', 'testing', 1, '2019-12-09 15:22:02');
+(128, 1, 380, 'test review', 'testing', 1, '2019-12-09 15:22:02'),
+(131, 1, 385, 'shit book', 'Not that good of a book. It&#39;s not even a book!', 1, '2019-12-11 19:04:47'),
+(132, 7, 385, 'Good read!', 'I really enjoyed reading this book. I would recommend to anyway!', 1, '2019-12-11 19:05:48'),
+(134, 1, 385, 'this book is awesome', 'awesome', 1, '2020-11-13 09:10:10');
 
 -- --------------------------------------------------------
 
@@ -183,7 +198,7 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'user',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -195,7 +210,9 @@ INSERT INTO `user` (`user_id`, `name`, `email`, `password`, `role`, `created_at`
 (2, 'tuan', 'tuan@gmail.com', '$2y$10$O5wDXMcErTtNZTBfvWWjYOl0EXYxSHoDl.C2ns9MUiYaqgaq0naJS', 'user', '2019-09-05 02:17:36'),
 (3, 'John', 'john@gmail.com', '$2y$10$erUftTqzEIcd0ehoTzANqe7cMWlfUZCWSJL39QfBfHve8is5Z3z/6', 'general_user', '2019-09-19 23:52:34'),
 (5, 'tom', 'tom@gmail.com', '$2y$10$sFmNyGHJjsQSsdpmZna21ea21wTYVCik.rAEBxOt5Hpnfz2T4ul5a', 'user', '2019-10-09 05:12:21'),
-(6, 'Testr', 'testr@gmail.com', '$2y$10$RisyCGjCvnGeReAAyU3FTuAiJmCtEYuLINK0sQpikoytGgOzeBwSC', 'user', '2019-12-06 19:24:51');
+(6, 'Testr', 'testr@gmail.com', '$2y$10$RisyCGjCvnGeReAAyU3FTuAiJmCtEYuLINK0sQpikoytGgOzeBwSC', 'user', '2019-12-06 19:24:51'),
+(7, 'Testing', 'testing@gmail.com', '$2y$10$brDkif0dOBg9Vqa0lyTjo.F/4CM0/XNbfXZms/koV4T4FBj0Qsabu', 'user', '2019-12-11 18:41:39'),
+(8, 'Moderator', 'admin@gmail.com', '$2y$10$D8hS5PIZbPemCRr1V9nA.OzcI1.9bNNThiHizYeHfbdBkKYkKveZ.', 'admin', '2019-12-11 18:51:54');
 
 --
 -- Indexes for dumped tables
@@ -256,25 +273,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `author`
 --
 ALTER TABLE `author`
-  MODIFY `author_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+  MODIFY `author_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=382;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=389;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
