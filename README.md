@@ -1,5 +1,5 @@
 # Book Review
-> CMS built on the TraversyMVC PHP framework.
+> CMS built on the TraversyMVC PHP framework (https://www.udemy.com/course/object-oriented-php-mvc/).
 
 ## Supported Features
 
@@ -17,10 +17,8 @@
 
 ## Deployment Instructions
 
-URLROOT needs to be defined to correctly display the front end.
+[1] Add database "ibdb" in phpmyadmin
 
-[1] Add database "book_review" in phpmyadmin
-
-[2] import book_review.sql to new db
+[2] import ibdb.sql to new db
 
 [3] Start web application
