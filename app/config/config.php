@@ -4,7 +4,7 @@
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
     define('DB_PASS', '');
-    define('DB_NAME', 'book_review');
+    define('DB_NAME', 'ibdb');
 
     // App Root
     define('APPROOT', dirname(dirname(__FILE__)));
@@ -13,4 +13,4 @@
     define('URLROOT', 'http://localhost/ibdb');
 
     // Site Name
-    define('SITENAME', 'Book Review');
+    define('SITENAME', 'IBDB');

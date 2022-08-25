@@ -17,14 +17,10 @@
 
 ## Deployment Instructions
 
-URLROOT needs to be defined to to correctly display the front end.
+URLROOT needs to be defined to correctly display the front end.
 
-[1] Add database book_review in XAMPP or your preferred program
+[1] Add database "book_review" in phpmyadmin
 
 [2] import book_review.sql to new db
-
-[3] Open app/config/config.php in notepad
-
-[4] Edit line 13 to point to project directory ('http://localhost/project').
 
 [3] Start web application
