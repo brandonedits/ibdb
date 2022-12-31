@@ -19,10 +19,15 @@
         </ul>
 
         <!-- find book -->
+
+        <?php if(isset($_SESSION['user_id'])) : ?>
+          
         <form class="form-inline my-2 my-lg-0" action="<?php echo URLROOT; ?>/books/findBook/" method="post">
           <input class="form-control mr-sm-2" name="query" type="search" placeholder="title, author, genre, isbn" size="40" value="<?php echo isset($data['query']) ? $data['query'] : ''; ?>">
           <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
+
+        <?php endif; ?>
         
         <ul class="navbar-nav ml-auto">
          <?php if(isset($_SESSION['user_id'])) : ?>
